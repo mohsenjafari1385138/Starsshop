@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>استارلین | خرید استارز و پرمیوم تلگرام</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<style>
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfont/woff2/Vazirmatn-Regular.woff2') format('woff2');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfont/woff2/Vazirmatn-Medium.woff2') format('woff2');
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfont/woff2/Vazirmatn-Black.woff2') format('woff2');
+    font-weight: 900;
+  }
+
+  :root {
+    --bg: #0c0f16;
+    --surface: #161b26;
+    --surface-hi: #1e2432;
+    --line: #2a3142;
+    --gold: #f2b544;
+    --gold-dim: #7a5f27;
+    --blue: #5b8def;
+    --text: #eef0f4;
+    --text-dim: #8b93a7;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Vazirmatn', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-image:
+      radial-gradient(1px 1px at 20% 15%, rgba(242,181,68,.55) 0, transparent 60%),
+      radial-gradient(1px 1px at 75% 8%, rgba(255,255,255,.4) 0, transparent 60%),
+      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,.3) 0, transparent 60%),
+      radial-gradient(1px 1px at 88% 22%, rgba(242,181,68,.4) 0, transparent 60%),
+      radial-gradient(1px 1px at 60% 5%, rgba(255,255,255,.25) 0, transparent 60%);
+    background-repeat: no-repeat;
+    padding-bottom: 110px;
+  }
+
+  .wrap { max-width: 480px; margin: 0 auto; padding: 20px 16px 0; }
+
+  header.hero {
+    padding: 18px 4px 22px;
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .brand-row .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 1.35;
+    margin: 0 0 8px;
+  }
+  .hero h1 .accent { color: var(--gold); }
+
+  .hero p {
+    color: var(--text-dim);
+    font-size: 14.5px;
+    line-height: 1.9;
+    margin: 0;
+    max-width: 34ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 5px;
+    margin: 22px 0 18px;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 11px 0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+    user-select: none;
+  }
+  .tab.active {
+    background: var(--surface-hi);
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  .section-label {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 4px 2px 12px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .grid.premium { grid-template-columns: repeat(2, 1fr); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 10px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: border-color .18s ease, transform .12s ease, background .18s ease;
+  }
+  .card:active { transform: scale(.97); }
+  .card.selected {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, rgba(242,181,68,.12), rgba(242,181,68,.03));
+  }
+  .card .amount {
+    font-weight: 900;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .card .amount svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .card .price {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+  }
+  .card .badge {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: #201703;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .premium-card .amount { font-size: 16px; }
+  .premium-card .sub { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+
+  .recipient {
+    margin-top: 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .recipient label {
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .recipient .input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 11px 12px;
+  }
+  .recipient .input-row span.at { color: var(--text-dim); }
+  .recipient input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14.5px;
+    direction: ltr;
+    text-align: right;
+  }
+  .recipient input::placeholder { color: #4b5163; }
+
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    margin: 26px 4px 6px;
+    color: var(--text-dim);
+    font-size: 11.5px;
+  }
+  .steps .step { display: flex; align-items: center; gap: 6px; }
+  .steps .step.done { color: var(--gold); }
+  .steps .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  .summary {
+    margin-top: 14px;
+    border-top: 1px dashed var(--line);
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .summary strong {
+    color: var(--text);
+    font-size: 19px;
+    font-weight: 900;
+  }
+
+  .checkout-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(180deg, transparent, var(--bg) 22%);
+    padding: 18px 16px 22px;
+  }
+  .checkout-bar .inner {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--surface-hi);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .checkout-bar .total-block { font-size: 12.5px; color: var(--text-dim); }
+  .checkout-bar .total-block strong {
+    display: block;
+    font-size: 18px;
+    color: var(--text);
+    font-weight: 900;
+    margin-top: 2px;
+  }
+  .pay-btn {
+    background: var(--gold);
+    color: #201703;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 22px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: filter .15s ease;
+  }
+  .pay-btn:disabled {
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: not-allowed;
+  }
+  .pay-btn:not(:disabled):active { filter: brightness(.92); }
+
+  .hidden { display: none !important; }
+
+  /* result screen */
+  .result-screen {
+    padding-top: 60px;
+    text-align: center;
+  }
+  .result-icon {
+    width: 76px; height: 76px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(242,181,68,.25), transparent 70%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .result-screen h2 { font-size: 22px; margin: 0 0 10px; font-weight: 900; }
+  .result-screen p { color: var(--text-dim); font-size: 14px; line-height: 1.9; max-width: 30ch; margin: 0 auto; }
+  .result-detail {
+    margin: 26px auto 0;
+    max-width: 320px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: right;
+    font-size: 13.5px;
+  }
+  .result-detail .row { display: flex; justify-content: space-between; padding: 7px 0; color: var(--text-dim); }
+  .result-detail .row strong { color: var(--text); font-weight: 500; }
+  .result-detail .row + .row { border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<div class="wrap" id="shop-view">
+  <header class="hero">
+    <div class="brand-row"><span class="dot"></span> استارلین · فروشگاه دیجیتال تلگرام</div>
+    <h1>استارز و پرمیوم<br><span class="accent">در چند ثانیه</span> برسه دستت</h1>
+    <p>بدون نیاز به VPN یا کارت خارجی، مستقیم روی اکانت تلگرامت.</p>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="stars">استارز تلگرام</div>
+    <div class="tab" data-tab="premium">تلگرام پرمیوم</div>
+  </div>
+
+  <div id="tab-stars">
+    <div class="section-label">مقدار استارز رو انتخاب کن</div>
+    <div class="grid" id="stars-grid"></div>
+  </div>
+
+  <div id="tab-premium" class="hidden">
+    <div class="section-label">مدت اشتراک پرمیوم رو انتخاب کن</div>
+    <div class="grid premium" id="premium-grid"></div>
+  </div>
+
+  <div class="recipient">
+    <label>آیدی کاربری تلگرام گیرنده (بدون @)</label>
+    <div class="input-row">
+      <span class="at">@</span>
+      <input id="username" type="text" placeholder="مثال: milad_dev" dir="ltr" />
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><span class="dot"></span> انتخاب بسته</div>
+    <div class="step" id="step-2"><span class="dot"></span> پرداخت</div>
+    <div class="step" id="step-3"><span class="dot"></span> تحویل خودکار</div>
+  </div>
+</div>
+
+<div class="wrap hidden result-screen" id="result-view">
+  <div class="result-icon">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 6L9 17l-5-5" stroke="#f2b544" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <h2>سفارش ثبت شد</h2>
+  <p>ربات به‌صورت خودکار سفارشت رو پردازش می‌کنه و همین‌جا نتیجه رو بهت اعلام می‌کنه.</p>
+  <div class="result-detail" id="result-detail"></div>
+</div>
+
+<div class="checkout-bar" id="checkout-bar">
+  <div class="inner">
+    <div class="total-block">
+      مبلغ قابل پرداخت
+      <strong id="total-price">۰ تومان</strong>
+    </div>
+    <button class="pay-btn" id="pay-btn" disabled>ادامه به پرداخت</button>
+  </div>
+</div>
+
+<script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); }
+
+  // ---- داده نمونه (در نسخه واقعی از سرور/تامین‌کننده گرفته میشه) ----
+  const STARS = [
+    { amount: 50,   price: 62000 },
+    { amount: 100,  price: 118000 },
+    { amount: 250,  price: 285000, badge: 'پرفروش' },
+    { amount: 500,  price: 555000 },
+    { amount: 1000, price: 1080000 },
+    { amount: 2500, price: 2650000 },
+  ];
+
+  const PREMIUM = [
+    { months: 1,  label: '۱ ماهه',  price: 640000 },
+    { months: 3,  label: '۳ ماهه',  price: 1740000, badge: 'صرفه‌جویی ۹٪' },
+    { months: 6,  label: '۶ ماهه',  price: 3120000, badge: 'صرفه‌جویی ۱۸٪' },
+    { months: 12, label: '۱۲ ماهه', price: 5450000, badge: 'صرفه‌جویی ۲۹٪' },
+  ];
+
+  const starIcon = `<svg viewBox="0 0 24 24" fill="#f2b544"><path d="M12 2l2.9 6.6L22 9.6l-5 4.9 1.2 7-6.2-3.6L5.8 21.5 7 14.5l-5-4.9 7.1-1z"/></svg>`;
+
+  let activeTab = 'stars';
+  let selected = null; // { type, ...item }
+
+  const starsGrid = document.getElementById('stars-grid');
+  const premiumGrid = document.getElementById('premium-grid');
+
+  function fmt(n) { return n.toLocaleString('fa-IR'); }
+
+  STARS.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `
+      ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
+      <div class="amount">${starIcon} ${fmt(item.amount)}</div>
+      <div class="price">${fmt(item.price)} تومان</div>
+    `;
+    el.addEventListener('click', () => selectCard(el, { type: 'stars', ...item }));
+    starsGrid.appendChild(el);
+  });
+
+  PREMIUM.forEach((item) => {
+    const el = document.createElement('div');
+    el.className = 'card premium-card';
+    el.innerHTML = `
+      ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
+      <div class="amount">پرمیوم ${item.label}</div>
+      <div class="sub">اشتراک کامل تلگرام</div>
+      <div class="price">${fmt(item.price)} تومان</div>
+    `;
+    el.addEventListener('click', () => selectCard(el, { type: 'premium', ...item }));
+    premiumGrid.appendChild(el);
+  });
+
+  function selectCard(el, item) {
+    const grid = el.parentElement;
+    [...grid.children].forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selected = item;
+    updateCheckout();
+  }
+
+  document.querySelectorAll('.tab').forEach(tabEl => {
+    tabEl.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tabEl.classList.add('active');
+      activeTab = tabEl.dataset.tab;
+      document.getElementById('tab-stars').classList.toggle('hidden', activeTab !== 'stars');
+      document.getElementById('tab-premium').classList.toggle('hidden', activeTab !== 'premium');
+      selected = null;
+      updateCheckout();
+    });
+  });
+
+  const usernameInput = document.getElementById('username');
+  const payBtn = document.getElementById('pay-btn');
+  const totalPriceEl = document.getElementById('total-price');
+
+  function updateCheckout() {
+    const ready = selected && usernameInput.value.trim().length > 2;
+    payBtn.disabled = !ready;
+    totalPriceEl.textContent = selected ? fmt(selected.price) + ' تومان' : '۰ تومان';
+  }
+  usernameInput.addEventListener('input', updateCheckout);
+
+  payBtn.addEventListener('click', () => {
+    if (!selected) return;
+    const order = {
+      type: selected.type,
+      amount: selected.amount || null,
+      months: selected.months || null,
+      price: selected.price,
+      username: usernameInput.value.trim(),
+    };
+
+    document.getElementById('step-2').classList.add('done');
+    document.getElementById('step-3').classList.add('done');
+
+    // نمایش صفحه نتیجه (دمو) — در نسخه واقعی این بعد از تایید پرداخت درگاه نمایش داده میشه
+    document.getElementById('shop-view').classList.add('hidden');
+    document.getElementById('checkout-bar').classList.add('hidden');
+    document.getElementById('result-view').classList.remove('hidden');
+
+    const detailLabel = order.type === 'stars'
+      ? `${fmt(order.amount)} استارز`
+      : `پرمیوم ${PREMIUM.find(p => p.months === order.months).label}`;
+
+    document.getElementById('result-detail').innerHTML = `
+      <div class="row"><span>بسته</span><strong>${detailLabel}</strong></div>
+      <div class="row"><span>گیرنده</span><strong>@${order.username}</strong></div>
+      <div class="row"><span>مبلغ</span><strong>${fmt(order.price)} تومان</strong></div>
+    `;
+
+    // ارسال اطلاعات سفارش به ربات (بک‌اند تصمیم می‌گیره درگاه پرداخت رو صدا بزنه)
+    if (tg) {
+      tg.MainButton.setText('بازگشت به ربات').show();
+      tg.MainButton.onClick(() => {
+        tg.sendData(JSON.stringify(order));
+        tg.close();
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
